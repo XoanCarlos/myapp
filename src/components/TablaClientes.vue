@@ -113,12 +113,10 @@ export default {
             throw new Error('No se pudieron obtener los datos del servidor.');
         }
 
-        const data = await response.json();
+        this.clientes = await response.json();
 
-        // Asignamos los clientes a la variable del componente
-        this.clientes = data;
         } catch (error) {
-        console.error('Error al obtener clientes:', error);
+        console.error('Error al obtener los clientes:', error);
         // Puedes agregar manejo de errores aquí, por ejemplo, mostrar un mensaje al usuario
         Swal.fire({
             icon: 'error',
@@ -259,8 +257,10 @@ export default {
             const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
 
             if (index !== -1) {
-                this.clientes.splice(index, 1);
-
+                //this.clientes.splice(index, 1);
+                await fetch(`http://localhost:3000/clientes/${clienteId}`, {
+                    method: 'DELETE',
+                });
                 // Mostrar alerta de éxito
                 this.mostrarAlerta('Cliente eliminado correctamente', 'success');
             } else {
@@ -295,6 +295,7 @@ export default {
               },
             });
         },
+      
         async mostrarConfirmacionEliminar() {
         // Mostrar ventana de confirmación
         const confirmacion = await Swal.fire({
@@ -314,7 +315,7 @@ export default {
         });
 
         return confirmacion.isConfirmed;
-    },
+     },
     },
   };
             
