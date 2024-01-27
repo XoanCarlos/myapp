@@ -107,7 +107,8 @@ export default {
     async obtenerClientes() {
         try {
         // Ahora hacemos una solicitud directamente al servidor JSON
-        const response = await fetch('http://localhost:3000/clientes'); // Cambia el puerto si es diferente
+        const response = await fetch('http://localhost:3000/clientes'); 
+        // Cambia el puerto si es diferente
 
         if (!response.ok) {
             throw new Error('No se pudieron obtener los datos del servidor.');
@@ -128,150 +129,145 @@ export default {
 
          
 
-  // función para guardar el cliente
+  // función para guardaro actualizar el cliente
 
     async guardarCliente() {
-    try {
-        // Validar DNI/NIE
-        const validacionDniNie = this.validarDniNie();
+        try {
+            const validacionDniNie = this.validarDniNie();  // Validar DNI/NIE
 
-        if (validacionDniNie) {
-        // Crear el cliente con los datos del formulario
-        const cliente = {
-            dni: this.dni.trim().toUpperCase(),
-            nombre: this.capitalize(this.nombre.trim()),
-            apellido: this.capitalize(this.apellido.trim()),
-            email: this.email.trim(),
-        };
+            if (validacionDniNie) {  // Crear el cliente con los datos del formulario
+            const cliente = {
+                dni: this.dni.trim().toUpperCase(),
+                nombre: this.nombre.trim(),
+                apellido: this.apellido.trim(),
+                email: this.email.trim(),
+            };
 
-        let url = 'http://localhost:3000/clientes';
-        let metodo = 'POST';
+            let url = 'http://localhost:3000/clientes';
+            let metodo = 'POST';
 
-        // Si hay un cliente seleccionado, es una actualización (PUT)
-        if (this.clienteSeleccionado) {
-            url += `/${this.clienteSeleccionado.id}`;
-            metodo = 'PUT';
-        }
+            // Si hay un cliente seleccionado, es una actualización (PUT)
+            if (this.clienteSeleccionado) {
+                url += `/${this.clienteSeleccionado.id}`;
+                metodo = 'PUT';
+            }
 
-        // Realizar la solicitud al servidor JSON
-        const response = await fetch(url, {
-            method: metodo,
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(cliente),
-        });
-
-        if (!response.ok) {
-            throw new Error('Error al guardar el cliente en el servidor.');
-        }
-
-        // Limpiar el formulario y obtener la lista actualizada de clientes
-        this.limpiar();
-        this.obtenerClientes();
-
-        // Mostrar mensaje de éxito
-        const mensaje = this.clienteSeleccionado ? 'Cliente modificado correctamente.' : 'Cliente guardado correctamente.';
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: mensaje,
-        });
-        } else {
-        // Mostrar alerta de error de validación
-        this.mostrarAlerta('DNI o NIE no válido', 'error');
-        }
-
-    } catch (error) {
-        console.error('Error al guardar el cliente:', error);
-
-        // Mostrar mensaje de error
-        Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error al guardar el cliente en el servidor.',
-        });
-    }
-    },
-
-
-   capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    },
-    
-    // Validar DNI o NIE
-    validarDniNie() {
-    const dniNie = this.dni.trim().toUpperCase(); // Convierte a mayúsculas para simplificar la validación
-
-    // Expresión regular para validar DNI y NIE
-    const regexDniNie = /^[0-9XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
-
-    if (!regexDniNie.test(dniNie)) {
-        this.mostrarAlerta('DNI o NIE no válido', 'error');
-        return false;
-    }
-
-    // Validar el dígito de control
-    const valor = dniNie.replace(/^[XYZ]/, (letra) => {
-        return letra === 'X' ? '0' : (letra === 'Y' ? '1' : (letra === 'Z' ? '2' : letra));
-    });
-
-    const numero = parseInt(valor.slice(0, 9), 10);
-    let letraCalculada = 'TRWAGMYFPDXBNJZSQVHLCKE'.charAt(numero % 23);
-
-    if (letraCalculada !== dniNie.charAt(8)) {
-        this.mostrarAlerta('DNI o NIE no válido', 'error');
-        return false;
-    }
-
-    // Devolver true si la validación es exitosa
-    return true;
-    },
-
-    // función para modificar el cliente que llama a la función limpiar y guardarCliente
-    modificarCliente(clienteId) {
-      const cliente = this.clientes.find(cliente => cliente.id === clienteId);
-
-      if (cliente) {
-        this.clienteSeleccionado = cliente; // Asegúrate de actualizar clienteSeleccionado
-        this.dni = cliente.dni;
-        this.nombre = cliente.nombre;
-        this.apellido = cliente.apellido;
-        this.email = cliente.email;
-
-        this.mostrarAlerta('Datos del cliente listos para modificar', 'info');
-      } else {
-        this.mostrarAlerta('Cliente no encontrado', 'error');
-      }
-    },
-
-
-    // función para eliminar el cliente
-    async eliminarCliente(clienteId) {
-        // Mostrar ventana de confirmación
-        const confirmacion = await this.mostrarConfirmacionEliminar();
-
-        // Verificar si se confirmó la eliminación
-        if (confirmacion) {
-            // Realizar la lógica de eliminación
-            const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
-
-            if (index !== -1) {
-                //this.clientes.splice(index, 1);
-                await fetch(`http://localhost:3000/clientes/${clienteId}`, {
-                    method: 'DELETE',
+                // Realizar la solicitud al servidor JSON
+                const response = await fetch(url, {
+                    method: metodo,
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cliente),
                 });
-                // Mostrar alerta de éxito
-                this.mostrarAlerta('Cliente eliminado correctamente', 'success');
+
+                if (!response.ok) {
+                    throw new Error('Error al guardar el cliente en el servidor.');
+                }
+
+                // Limpiar el formulario y obtener la lista actualizada de clientes
+                this.limpiar();
+                this.obtenerClientes();
+
+                // Mostrar mensaje de éxito
+                const mensaje = this.clienteSeleccionado ? 'Cliente modificado correctamente.' : 'Cliente guardado correctamente.';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: mensaje,
+                });
+                } else {
+                // Mostrar alerta de error de validación
+                this.mostrarAlerta('DNI o NIE no válido', 'error');
+                }
+
+            } catch (error) {
+                console.error('Error al guardar el cliente:', error);
+
+                // Mostrar mensaje de error
+                Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al guardar el cliente en el servidor.',
+                });
+             }
+            },
+
+            // Validar DNI o NIE
+            validarDniNie() {
+            const dniNie = this.dni.trim().toUpperCase(); // Convierte a mayúsculas para simplificar la validación
+
+            // Expresión regular para validar DNI y NIE
+            const regexDniNie = /^[0-9XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
+
+            if (!regexDniNie.test(dniNie)) {
+                this.mostrarAlerta('DNI o NIE no válido', 'error');
+                return false;
+            }
+
+            // Validar el dígito de control
+            const valor = dniNie.replace(/^[XYZ]/, (letra) => {
+                return letra === 'X' ? '0' : (letra === 'Y' ? '1' : (letra === 'Z' ? '2' : letra));
+            });
+
+            const numero = parseInt(valor.slice(0, 9), 10);
+            let letraCalculada = 'TRWAGMYFPDXBNJZSQVHLCKE'.charAt(numero % 23);
+
+            if (letraCalculada !== dniNie.charAt(8)) {
+                this.mostrarAlerta('DNI o NIE no válido', 'error');
+                return false;
+            }
+
+            // Devolver true si la validación es exitosa
+            return true;
+            },
+
+            // función para modificar el cliente que llama a la función limpiar y guardarCliente
+            modificarCliente(clienteId) {
+            const cliente = this.clientes.find(cliente => cliente.id === clienteId);
+
+            if (cliente) {
+                this.clienteSeleccionado = cliente; // Asegúrate de actualizar clienteSeleccionado
+                this.dni = cliente.dni;
+                this.nombre = cliente.nombre;
+                this.apellido = cliente.apellido;
+                this.email = cliente.email;
+
+                this.mostrarAlerta('Datos del cliente listos para modificar', 'info');
             } else {
-                // Mostrar alerta de error si el cliente no existe
                 this.mostrarAlerta('Cliente no encontrado', 'error');
             }
-        }
-    },
+            },
+
+        // función para eliminar el cliente
+
+        async eliminarCliente(clienteId) {
+            // Mostrar ventana de confirmación
+            const confirmacion = await this.mostrarConfirmacionEliminar();
+
+            // Verificar si se confirmó la eliminación
+            if (confirmacion) {
+                // Realizar la lógica de eliminación
+                const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
+
+                if (index !== -1) {
+                    //this.clientes.splice(index, 1);
+                    await fetch(`http://localhost:3000/clientes/${clienteId}`, {
+                        method: 'DELETE',
+                    });
+                    // Mostrar alerta de éxito
+                    this.mostrarAlerta('Cliente eliminado correctamente', 'success');
+                } else {
+                    // Mostrar alerta de error si el cliente no existe
+                    this.mostrarAlerta('Cliente no encontrado', 'error');
+                }
+            }
+        },
+
+
   
 
-    // otras funciones Limpiar campos del formulario
+    // función  Limpiar campos del formulario
     limpiar() {
       // Lógica para limpiar los campos del formulario
       this.nombre = '';
@@ -296,21 +292,24 @@ export default {
             });
         },
       
+
+    // Mostrar ventana de confirmación
+
         async mostrarConfirmacionEliminar() {
-        // Mostrar ventana de confirmación
-        const confirmacion = await Swal.fire({
-            title: '¿Estás seguro de que deseas eliminar este cliente?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            customClass: {
-                container: 'custom-alert-container',
-                popup: 'custom-alert',
-                confirmButton: 'custom-alert-button',
-                cancelButton: 'custom-alert-button',
+      
+            const confirmacion = await Swal.fire({
+                title: '¿Estás seguro de que deseas eliminar este cliente?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                    container: 'custom-alert-container',
+                    popup: 'custom-alert',
+                    confirmButton: 'custom-alert-button',
+                    cancelButton: 'custom-alert-button',
             },
         });
 

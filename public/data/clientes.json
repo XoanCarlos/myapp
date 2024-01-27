@@ -1,25 +1,6 @@
 {
   "clientes": [
     {
-      "id": "1",
-      "dni": "65412378X",
-      "alta": "19/10/2023",
-      "apellido": "Barros Núñez",
-      "nombre": "Alfredo",
-      "direccion": "Calle Urzaiz, 2 4ºf",
-      "provincia": "Pontevedra",
-      "municipio": "Vigo",
-      "movil": 654789125,
-      "email": "alfredo@mail.com"
-    },
-    {
-      "dni": "55663311E",
-      "nombre": "María elena",
-      "apellido": "Abal solla",
-      "email": "alvaro@corre.es",
-      "id": "2"
-    },
-    {
       "id": "7",
       "dni": "11111111H",
       "alta": "01/10/2023",
