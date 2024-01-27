@@ -109,7 +109,7 @@ export default {
         // Ahora hacemos una solicitud directamente al servidor JSON
         // const response = await fetch('http://localhost:3000/clientes'); 
             
-        const response = await fetch('https://raw.githubusercontent.com/XoanCarlos/myapp/master/clientes.json'):
+        const response = await fetch('https://raw.githubusercontent.com/XoanCarlos/myapp/main/public/data/clientes.json?token=GHSAT0AAAAAACKJO7I2LPN3JMVVYMVH25T4ZNVJFEQ'):
         // Cambia el puerto si es diferente
 
         if (!response.ok) {
