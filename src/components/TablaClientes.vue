@@ -18,7 +18,7 @@
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text custom-span">Nombre:</span>
-                <input v-model="nombre" type="text" class="form-control" id="nombre" name="nombre">
+                <input ref ='nombre' v-model="nombre" type="text" class="form-control" id="nombre" name="nombre">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text custom-span">Apellidos:</span>
@@ -89,6 +89,7 @@ export default {
   components: {
     NavBar,
   },
+
   data() {
     return {
       clientes: [],
@@ -101,35 +102,10 @@ export default {
   },
   mounted() {
     this.obtenerClientes(); // Llama a la función para obtener clientes cuando el componente se monta
-  },
-
-  methods: {
-    async obtenerClientes() {
-        try {
-        // Ahora hacemos una solicitud directamente al servidor JSON
-        // const response = await fetch('http://localhost:3000/clientes'); 
-            
-        const response = await fetch('http://localhost:3000/clientes');
-        // Cambia el puerto si es diferente
-
-        if (!response.ok) {
-            throw new Error('No se pudieron obtener los datos del servidor.');
-        }
-
-        this.clientes = await response.json();
-
-        } catch (error) {
-        console.error('Error al obtener los clientes:', error);
-        // Puedes agregar manejo de errores aquí, por ejemplo, mostrar un mensaje al usuario
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudieron obtener los datos del servidor.',
-        });
-        }
     },
 
-         
+  methods: {
+  
 
   // función para guardaro actualizar el cliente
 
@@ -167,18 +143,26 @@ export default {
                     throw new Error('Error al guardar el cliente en el servidor.');
                 }
 
+                
                 // Limpiar el formulario y obtener la lista actualizada de clientes
                 this.limpiar();
-                this.obtenerClientes();
 
                 // Mostrar mensaje de éxito
                 const mensaje = this.clienteSeleccionado ? 'Cliente modificado correctamente.' : 'Cliente guardado correctamente.';
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: mensaje,
-                });
-                } else {
+         // Mostrar mensaje de éxito y esperar a que el usuario cierre la ventana
+            await Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: mensaje,
+                showConfirmButton: true,
+                confirmButtonText: 'Cerrar',
+            }).then(async(result)=> {
+                    if (result.isConfirmed){
+                        this.obtenerClientes(); // Actualizar la lista de clientes
+                    }
+                });                               
+                
+            } else {
                 // Mostrar alerta de error de validación
                 this.mostrarAlerta('DNI o NIE no válido', 'error');
                 }
@@ -197,6 +181,9 @@ export default {
 
             // Validar DNI o NIE
             validarDniNie() {
+            
+            if (this.dni.length !== 0) {
+                              
             const dniNie = this.dni.trim().toUpperCase(); // Convierte a mayúsculas para simplificar la validación
 
             // Expresión regular para validar DNI y NIE
@@ -215,56 +202,81 @@ export default {
             const numero = parseInt(valor.slice(0, 9), 10);
             let letraCalculada = 'TRWAGMYFPDXBNJZSQVHLCKE'.charAt(numero % 23);
 
-            if (letraCalculada !== dniNie.charAt(8)) {
+            if (letraCalculada !== dniNie.charAt(8)){
                 this.mostrarAlerta('DNI o NIE no válido', 'error');
-                return false;
-            }
-
+                return false;   
+                }
             // Devolver true si la validación es exitosa
             return true;
+               }
             },
 
-            // función para modificar el cliente que llama a la función limpiar y guardarCliente
-            modificarCliente(clienteId) {
-            const cliente = this.clientes.find(cliente => cliente.id === clienteId);
+        // función para modificar el cliente que llama a la función limpiar y guardarCliente
+        modificarCliente(clienteId) {
+        const cliente = this.clientes.find(cliente => cliente.id === clienteId);
 
-            if (cliente) {
-                this.clienteSeleccionado = cliente; // Asegúrate de actualizar clienteSeleccionado
-                this.dni = cliente.dni;
-                this.nombre = cliente.nombre;
-                this.apellido = cliente.apellido;
-                this.email = cliente.email;
+        if (cliente) {
+            this.clienteSeleccionado = cliente; // Asegúrate de actualizar clienteSeleccionado
+            this.dni = cliente.dni;
+            this.nombre = cliente.nombre;
+            this.apellido = cliente.apellido;
+            this.email = cliente.email;
 
-                this.mostrarAlerta('Datos del cliente listos para modificar', 'info');
-            } else {
-                this.mostrarAlerta('Cliente no encontrado', 'error');
-            }
-            },
-
-        // función para eliminar el cliente
-
-        async eliminarCliente(clienteId) {
-            // Mostrar ventana de confirmación
-            const confirmacion = await this.mostrarConfirmacionEliminar();
-
-            // Verificar si se confirmó la eliminación
-            if (confirmacion) {
-                // Realizar la lógica de eliminación
-                const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
-
-                if (index !== -1) {
-                    //this.clientes.splice(index, 1);
-                    await fetch(`http://localhost:3000/clientes/${clienteId}`, {
-                        method: 'DELETE',
-                    });
-                    // Mostrar alerta de éxito
-                    this.mostrarAlerta('Cliente eliminado correctamente', 'success');
-                } else {
-                    // Mostrar alerta de error si el cliente no existe
-                    this.mostrarAlerta('Cliente no encontrado', 'error');
-                }
+            this.mostrarAlerta('Datos del cliente listos para modificar', 'info');
+        } else {
+            this.mostrarAlerta('Cliente no encontrado', 'error');
             }
         },
+
+
+            async obtenerClientes() {
+        try {
+        // Ahora hacemos una solicitud directamente al servidor JSON
+            
+            const response = await fetch('http://localhost:3000/clientes'); // Cambia el puerto si es diferente
+
+        if (!response.ok) {
+            throw new Error('No se pudieron obtener los datos del servidor.');
+        }
+
+        this.clientes = await response.json();
+
+        } catch (error) {
+        console.error('Error al obtener los clientes:', error);
+        // Puedes agregar manejo de errores aquí, por ejemplo, mostrar un mensaje al usuario
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron obtener los datos del servidor.',
+        });
+        }
+    },
+
+         
+        // función para eliminar el cliente
+
+    async eliminarCliente(clienteId) {
+        // Mostrar ventana de confirmación
+        const confirmacion = await this.mostrarConfirmacionEliminar();
+
+        // Verificar si se confirmó la eliminación
+        if (confirmacion) {
+            // Realizar la lógica de eliminación
+            const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
+
+            if (index !== -1) {
+                //this.clientes.splice(index, 1);
+                await fetch(`http://localhost:3000/clientes/${clienteId}`, {
+                    method: 'DELETE',
+                });
+                // Mostrar alerta de éxito
+                this.mostrarAlerta('Cliente eliminado correctamente', 'success');
+            } else {
+                // Mostrar alerta de error si el cliente no existe
+                this.mostrarAlerta('Cliente no encontrado', 'error');
+            }
+        }
+    },
 
 
   

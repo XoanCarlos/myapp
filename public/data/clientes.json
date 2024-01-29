@@ -1,64 +1,39 @@
 {
   "clientes": [
     {
-      "id": "7",
       "dni": "11111111H",
-      "alta": "01/10/2023",
-      "apellido": "Ruiz Solla",
-      "nombre": "Alvaro",
-      "direccion": "Calle Santiago Mayor, 34",
-      "provincia": "A Coruña",
-      "municipio": "Bergondo",
-      "movil": 654789456,
-      "email": "alfredo@mail.com"
-    },
-    {
-      "id": "8",
-      "dni": "Y2345678Z",
-      "alta": "31/10/2023",
-      "apellido": "Salam Alí",
-      "nombre": "Jasmina",
-      "direccion": "Calle Muralla, 2",
-      "provincia": "Lugo",
-      "municipio": "Láncara",
-      "movil": 775645654,
-      "email": "jasmina@cole.com"
-    },
-    {
-      "id": "9",
-      "dni": "44564564V",
-      "alta": "06/11/2023",
-      "apellido": "Santos Álvarez",
-      "nombre": "Isabel",
-      "direccion": "Calle Solano, 23, 11ºg",
-      "provincia": "Madrid",
-      "municipio": "Madrid",
-      "movil": 756789456,
-      "email": "isabel@correo.com"
-    },
-    {
-      "id": "10",
-      "dni": "56464123C",
-      "alta": "07/12/2023",
-      "apellido": "González Arias",
       "nombre": "Luis",
-      "direccion": "Calle Sentana, 2",
-      "provincia": "Asturias",
-      "municipio": "Avilés",
-      "movil": 632514652,
-      "email": "luis@caspio.com"
+      "apellido": "Ruiz Solla",
+      "email": "alfredo@mail.com",
+      "id": "7"
     },
     {
-      "id": "11",
+      "dni": "Y2345678Z",
+      "nombre": "Jasmina Ds",
+      "apellido": "Salam Alí",
+      "email": "jasmina@micorreo.fr",
+      "id": "8"
+    },
+    {
+      "dni": "44564564V",
+      "nombre": "Isabel María",
+      "apellido": "Santos Álvarez",
+      "email": "isabel@gmail.com",
+      "id": "9"
+    },
+    {
+      "dni": "56464123C",
+      "nombre": "Luis",
+      "apellido": "González",
+      "email": "luis@mail.com",
+      "id": "10"
+    },
+    {
       "dni": "Z8927237E",
-      "alta": "03/11/2023",
-      "apellido": "Ninahuam Lopera",
       "nombre": "Agustín José",
-      "direccion": "Calle Damaso Alonso, 34",
-      "provincia": "Cáceres",
-      "municipio": "Cabañas del Castillo",
-      "movil": 775266923,
-      "email": "agustin@social.com"
+      "apellido": "Gómez",
+      "email": "agustin@social.com",
+      "id": "11"
     },
     {
       "id": "12",
