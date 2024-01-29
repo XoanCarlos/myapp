@@ -149,19 +149,18 @@ export default {
 
                 // Mostrar mensaje de éxito
                 const mensaje = this.clienteSeleccionado ? 'Cliente modificado correctamente.' : 'Cliente guardado correctamente.';
-         // Mostrar mensaje de éxito y esperar a que el usuario cierre la ventana
-            await Swal.fire({
+
+                   // Mostrar SweetAlert2 y ejecutar obtenerClientes() después de cerrar la ventana
+            Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
                 text: mensaje,
                 showConfirmButton: true,
                 confirmButtonText: 'Cerrar',
-            }).then(async(result)=> {
-                    if (result.isConfirmed){
-                        this.obtenerClientes(); // Actualizar la lista de clientes
-                    }
-                });                               
-                
+            }).then(() => {
+                this.obtenerClientes(); // Actualizar la lista de clientes
+            });
+            
             } else {
                 // Mostrar alerta de error de validación
                 this.mostrarAlerta('DNI o NIE no válido', 'error');
@@ -330,7 +329,10 @@ export default {
         return confirmacion.isConfirmed;
      },
     },
-  };
+
+ };
+
+  
             
 </script>
 
