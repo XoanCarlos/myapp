@@ -10,6 +10,7 @@
           <!-- Mostrar enlaces solo si las rutas están definidas -->
           <router-link v-if="articulosExists" to="/articulos" class="navbar-brand">Artículos</router-link>
           <router-link v-if="ventasExists" to="/ventas" class="navbar-brand">Ventas</router-link>
+          <router-link v-if="tareasExists" to="/tareas" class="navbar-brand">Tareas</router-link>
           <router-link v-if="contactoExists" to="/contacto" class="navbar-brand">Contacto</router-link>
           <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search">
@@ -29,6 +30,9 @@
               </li>
               <li class="nav-item" v-if="ventasExists">
                 <router-link to="/ventas" class="nav-link">Ventas</router-link>
+              </li>
+              <li class="nav-item" v-if="tareasExists">
+                <router-link to="/tareas" class="nav-link">Tareas</router-link>
               </li>
               <li class="nav-item" v-if="contactoExists">
                 <router-link to="/contacto" class="nav-link">Contacto</router-link>
@@ -55,9 +59,13 @@
       },
       articulosExists() {
         return this.$router.hasRoute('articulos');
+      },
+      tareasExists() {
+        return this.$router.hasRoute('tareas');
       }
-    }
+    } 
   };
+
   </script>
   
   <style>

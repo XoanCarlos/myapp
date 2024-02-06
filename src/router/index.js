@@ -1,5 +1,7 @@
 import PaginaInicio  from '@/components/PaginaInicio.vue'
 import TablaClientes from '@/components/TablaClientes.vue'
+import TablaArticulos from '@/components/TablaArticulos.vue'
+import TablaTareas from '@/components/TablaTareas.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -17,8 +19,14 @@ const routes = [
   {
     path: '/articulos',
     name: 'articulos',
-    component: () => import('@/components/TablaArticulos.vue')
+    component: TablaArticulos
   },
+  {
+    path: '/tareas',
+    name: 'tareas',
+    component: TablaTareas
+  },
+
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',

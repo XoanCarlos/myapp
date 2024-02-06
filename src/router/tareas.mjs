@@ -7,9 +7,13 @@ rutas.use(express.json());
 //otra forma de crear rutas
 
 rutas.get('/', async(req, res) => {
+  try{
     const tareas = await tarea.find();    
     res.json(tareas);
-  });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+}
+});
 
 rutas.post('/', async(req, res) => {
   try {

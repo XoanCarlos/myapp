@@ -5,6 +5,7 @@ import express from 'express';
 import http from 'http';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import tareasRouter from './router/tareas.mjs';
 
 
@@ -13,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 
 //ruta para las tareas
-
+app.use(cors());
 app.use('/tareas', tareasRouter);
 
 // usa el puerto 5000 pero en caso de que no este disponible usa el puerto 3000
