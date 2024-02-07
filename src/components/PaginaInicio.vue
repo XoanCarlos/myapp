@@ -1,28 +1,66 @@
 <template>
     <div>
-        <NavBar />
+      <NavBar />
+      <div class="page-content">
+        <br>
+        <h1 class="text-center">Panel Gestión {{ alumno }}</h1>
+        <div class="button-container">
+          <router-link to="/clientes" class="custom-button">Clientes</router-link>
+          <router-link to="/articulos" class="custom-button">Artículos</router-link>
+          <router-link to="/tareas" class="custom-button">Tareas</router-link>
+        </div>
+      </div>
     </div>
-    <div>
-        <h1 class="text-center">Página proyecto del {{ alumno }}</h1>
-    </div>
-
-</template>
-
-<script>
-import NavBar from '@/components/NavBar.vue';
-
-export default {
+  </template>
+  
+  <script>
+  import NavBar from '@/components/NavBar.vue';
+  
+  export default {
     name: 'PaginaInicio',
     components: {
-        NavBar
+      NavBar
     },
     data() {
-        return {
-            alumno: 'nombre del alumno/a'
-        }
-    },
-    mounted() {
-        console.log('Componente PaginaInicio.vue cargado');
+      return {
+        alumno: 'Distribuciones Teis'
+      }
     }
-}
-</script>
+  }
+  </script>
+  
+  <style scoped>
+  .page-content {
+    padding: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px); /* Ajuste para centrar verticalmente en la página */
+  }
+  
+  .custom-button {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none; /* Evitar subrayado */
+    outline: none; /* Evitar el borde al hacer clic */
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-button:hover {
+    background-color: #2980b9;
+  }
+  </style>
+  
