@@ -14,20 +14,35 @@
         <form class="form-inline">    
             <div class="input-group mb-3">
                 <span class="input-group-text custom-span">Nombre:</span>
-                <input v-model="nombre" type="text" class="form-control form-control-sm" id="nombre" name="nombre">
+                <input v-model="nombre" type="text" class="form-control " id="nombre" name="nombre" placeholder="Nombre Tarea">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text custom-span">Descripción:</span>
-                <input ref ='descripcion' v-model="descripcion" type="text" class="form-control" id="descripcion" name="descripcion">
+                <input ref ='descripcion' v-model="descripcion" type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Descripción Tarea">
             </div>
-            <div class="input-group mb-3">
+            <!--calendario para cargar fecha-->
+            <div class="input-group mb-3 w-25">
                 <span class="input-group-text custom-span">Fecha:</span>
-                <input v-model="fecha" type="text" class="form-control" id="fecha" name="fecha">
+                <input ref="fechaAlta" v-model="fecha" type="text" class="form-control" placeholder="Seleccionar fecha">
+                 <button @click="abrirCalendario" class="btn btn-outline-secondary" type="button">
+                  <i class="bi bi-calendar"></i>
+                 </button>
             </div>
-
+            <!-- radio button -->
             <div class="input-group mb-3">
-                <span class="input-group-text custom-span">Prioridad:</span>
-                <input v-model="prioridad" type="text" class="form-control" id="prioridad" name="prioridad">
+                    <span class="input-group-text custom-span" style="margin-right: 10px;">Prioridad:</span>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="prioridadAlta" value="alta" v-model="prioridad">
+                    <label class="form-check-label" for="prioridadAlta">Alta</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="prioridadMedia" value="media" v-model="prioridad">
+                    <label class="form-check-label" for="prioridadMedia">Media</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="prioridadBaja" value="baja" v-model="prioridad">
+                    <label class="form-check-label" for="prioridadBaja">Baja</label>
+                </div>
             </div>
             <!-- Botones -->
             <div class="text-center">
@@ -87,6 +102,11 @@
 <script>
 import NavBar from '@/components/NavBar.vue';
 import Swal from 'sweetalert2';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import { format } from 'date-fns';
+import { Spanish } from 'flatpickr/dist/l10n/es';
+
 export default {
   name: 'TablaTareas',
   components: {
@@ -97,8 +117,9 @@ export default {
         nombre: '',
         descripcion: '',
         fecha: '',
-        prioridad: '',
+        prioridad: 'alta',
         tareas: [],
+        show : false
         };
     },
 
@@ -106,13 +127,34 @@ export default {
         this.obtenerTareas();
     },
 
+    mounted() {
+        const fechaAlta = this.$refs.fechaAlta;
+         // Asegurarse de que this.fecha sea un objeto Date
+        const fecha = this.fecha ? new Date(this.fecha) : new Date();
+
+        // Formatear la fecha y asignarla al input de fecha
+        const fechaFormateada = format(fecha, 'dd-MM-yyyy');
+        fechaAlta.value = fechaFormateada;
+        
+        flatpickr(fechaAlta,{
+            locale: Spanish,
+        });
+    },
+
     methods:{
+        abrirCalendario() {
+                const fechaAlta = this.$refs.fechaAlta;
+            if (fechaAlta._flatpickr) {
+                fechaAlta._flatpickr.open();
+            }        
+        },
+
         limpiarCampos() {
             // Limpiar los campos del formulario
             this.nombre = '';
             this.descripcion = '';
             this.fecha = '';
-            this.prioridad = '';
+            this.prioridad = 'alta';
 
             // Mostrar mensaje de éxito con SweetAlert
             Swal.fire({
@@ -126,7 +168,7 @@ export default {
             this.nombre = '';
             this.descripcion = '';
             this.fecha = '';
-            this.prioridad = '';
+            this.prioridad = 'alta';
       },
       
        async obtenerTareas(){
@@ -142,22 +184,27 @@ export default {
         }
       },
 
+      // guardar Tareas
+
       async guardarTarea() {
             try {
                 const nuevaTarea = {
                     nombre: this.nombre,
                     descripcion: this.descripcion,
-                    fecha: this.fecha,
+                    fecha: format(new Date(this.fecha), 'dd-MM-yyyy'),
                     prioridad: this.prioridad
                 };
 
-                const res = await fetch('http://localhost:5000/tareas', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(nuevaTarea)
-                });
+              // Verificar si la prioridad está entre los valores permitidos
+            if (['alta', 'media', 'baja'].includes(nuevaTarea.prioridad)) {
+            const res = await fetch('http://localhost:5000/tareas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(nuevaTarea)
+                
+            });
 
                 await Swal.fire({
                         icon: 'success',
@@ -172,11 +219,12 @@ export default {
 
                 // Actualizar la lista de tareas después de guardar la nueva tarea
                 await this.obtenerTareas();
-                
+               }
                 // Limpiar los campos del formulario después de guardar la tarea
                 this.limpiarTarea();
 
-            } catch (error) {
+            } 
+            catch (error) {
                 console.error(error);
                 await Swal.fire({
                     icon: 'error',
@@ -185,6 +233,7 @@ export default {
                 });
             }
         },
+
 
         async eliminarTarea(id) {
             try {
@@ -282,4 +331,4 @@ export default {
 
 </script>
 <style></style>
-```
+
