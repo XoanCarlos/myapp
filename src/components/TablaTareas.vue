@@ -28,9 +28,34 @@
                   <i class="bi bi-calendar"></i>
                  </button>
             </div>
+            <!-- select para seleccionar sala -->
+            <div class="input-group mb-3 w-25">
+            <label class="input-group-text custom-span" for="salaSelect">Sala:</label>
+                <select class="form-select" v-model="sala" id="salaSelect">
+                    <option value="Sala 1">Sala 1</option>
+                    <option value="Sala 2">Sala 2</option>
+                    <option value="Sala 3">Sala 3</option>
+                </select>
+            </div>
+            <!-- Checkbox para equipos adicionales -->
+          <div class="input-group mb-3">
+            <span class="input-group-text custom-span" style="margin-right: 20px;">Equipamiento:</span>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="equipoVideoconferencia" v-model="equipos" value="Equipo Videoconferencia">
+              <label class="form-check-label" for="equipoVideoconferencia">Equipo Videoconferencia</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="televisor" v-model="equipos" value="Televisor">
+              <label class="form-check-label" for="televisor">Televisor</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="pizarraDigital" v-model="equipos" value="Pizarra Digital">
+              <label class="form-check-label" for="pizarraDigital">Pizarra Digital</label>
+            </div>
+          </div>
             <!-- radio button -->
             <div class="input-group mb-3">
-                    <span class="input-group-text custom-span" style="margin-right: 10px;">Prioridad:</span>
+                    <span class="input-group-text custom-span" style="margin-right: 20px;">Prioridad:</span>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="prioridadAlta" value="alta" v-model="prioridad">
                     <label class="form-check-label" for="prioridadAlta">Alta</label>
@@ -69,6 +94,8 @@
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Fecha Alta</th>
+                    <th>Sala Reunión</th>
+                    <th>Equipamiento</th>
                     <th>Prioridad</th>
                     <th>Gestión</th>
                 </tr>
@@ -79,6 +106,8 @@
                     <td>{{tarea.nombre}}</td>
                     <td>{{tarea.descripcion}}</td>
                     <td class="text-center">{{tarea.fecha}}</td>
+                    <td class="text-center">{{tarea.sala}}</td>
+                    <td class="text">{{ tarea.equipos.join(', ') }}</td>
                     <td class="text-center">{{tarea.prioridad}}</td>
                     <td class="text-center ">
                         <div>
@@ -117,6 +146,8 @@ export default {
         nombre: '',
         descripcion: '',
         fecha: '',
+        sala: '',
+        equipos: [],  //array para equipos puedes ser varios
         prioridad: 'alta',
         tareas: [],
         show : false
@@ -154,6 +185,8 @@ export default {
             this.nombre = '';
             this.descripcion = '';
             this.fecha = '';
+            this.sala = null;
+            this.equipos = [];
             this.prioridad = 'alta';
 
             // Mostrar mensaje de éxito con SweetAlert
@@ -168,7 +201,10 @@ export default {
             this.nombre = '';
             this.descripcion = '';
             this.fecha = '';
+            this.sala = null;
+            this.equipos = [];
             this.prioridad = 'alta';
+        
       },
       
        async obtenerTareas(){
@@ -188,11 +224,15 @@ export default {
 
       async guardarTarea() {
             try {
+                console.log(this.nombre, this.descripcion, this.fecha, this.sala, this.prioridad, this.equipos);
                 const nuevaTarea = {
                     nombre: this.nombre,
                     descripcion: this.descripcion,
                     fecha: format(new Date(this.fecha), 'dd-MM-yyyy'),
-                    prioridad: this.prioridad
+                    sala: this.sala, 
+                    equipos: this.equipos,
+                    prioridad: this.prioridad,
+                   
                 };
 
               // Verificar si la prioridad está entre los valores permitidos
@@ -269,10 +309,12 @@ export default {
             this.nombre = tarea.nombre;
             this.descripcion = tarea.descripcion;
             this.fecha = tarea.fecha;
+            this.sala = tarea.sala;
+            this.equipos = tarea.equipos;
             this.prioridad = tarea.prioridad;
             this.tareaSeleccionada = tarea;
+          
         },
-
 
 
         async modificarTarea() {
@@ -284,8 +326,10 @@ export default {
                 tarea.nombre = this.nombre;
                 tarea.descripcion = this.descripcion;
                 tarea.fecha = this.fecha;
+                tarea.sala = this.sala;
+                tarea.equipos = this.equipos;
                 tarea.prioridad = this.prioridad;
-
+        
                 // Enviar la solicitud PUT con la tarea actualizada al servidor
                 const res = await fetch(`http://localhost:5000/tareas/${tarea._id}`, {
                 method: 'PUT',
@@ -324,7 +368,6 @@ export default {
                 });
                }
             },
-
 
     }, 
 };
