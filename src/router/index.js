@@ -3,6 +3,8 @@ import TablaClientes from '@/components/TablaClientes.vue'
 import TablaArticulos from '@/components/TablaArticulos.vue'
 import TablaTareas from '@/components/TablaTareas.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import TablaContacto from '@/components/TablaContacto.vue'
+import Pedidos from '@/components/TablaPedidos.vue'
 
 
 const routes = [
@@ -26,7 +28,17 @@ const routes = [
     name: 'tareas',
     component: TablaTareas
   },
+  {
+    path: '/pedidos',
+    name: 'pedidos',
+    component: Pedidos
+  },
 
+  {
+    path: '/contacto',
+    name: 'contacto',
+    component: TablaContacto
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',

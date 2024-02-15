@@ -9,25 +9,25 @@
     </div>
 <hr/> <!-- formulario -->
 <div class="container-fluid">
-    <div class="row" id="map_section">
+    <div class="row justify-content-center align-items-center" id="map_section">
         <div class="col-12 col-m-6 col-lg-8 mx-auto">
         <form class="form-inline">    
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 w-25">
                 <span class="input-group-text custom-span">DNI/NIE:</span>
-                <input v-model="dni" type="text" class="form-control form-control-sm" id="dni" name="dni"  @blur="validarDniNie">
+                <input v-model="dni" type="text" class="form-control form-control-sm" placeholder="DNI Cliente" id="dni" name="dni"  @blur="validarDniNie">
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 w-75">
                 <span class="input-group-text custom-span">Nombre:</span>
-                <input ref ='nombre' v-model="nombre" type="text" class="form-control" id="nombre" name="nombre">
+                <input ref ='nombre' v-model="nombre" type="text" class="form-control" placeholder= "Nombre Cliente" id="nombre" name="nombre">
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 w-75">
                 <span class="input-group-text custom-span">Apellidos:</span>
-                <input v-model="apellido" type="text" class="form-control" id="apellido" name="apellido">
+                <input v-model="apellido" type="text" placeholder="Apellidos Cliente" class="form-control" id="apellido" name="apellido">
             </div>
 
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 w-50">
                 <span class="input-group-text custom-span">Email:</span>
-                <input v-model="email" type="text" class="form-control" id="email" name="email">
+                <input v-model="email" type="text" class="form-control" placeholder="e-mail cliente" id="email" name="email">
             </div>
             <!-- Botones -->
             <div class="text-center">

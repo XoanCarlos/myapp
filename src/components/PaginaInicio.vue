@@ -5,9 +5,16 @@
         <br>
         <h1 class="text-center">Panel Gestión {{ alumno }}</h1>
         <div class="button-container">
-          <router-link to="/clientes" class="custom-button">Clientes</router-link>
-          <router-link to="/articulos" class="custom-button">Artículos</router-link>
-          <router-link to="/tareas" class="custom-button">Tareas</router-link>
+          <table>
+            <tr>
+              <td><router-link to="/clientes" class="custom-button">Clientes</router-link></td>
+              <td><router-link to="/articulos" class="custom-button">Artículos</router-link></td>
+            </tr>
+             <tr>  
+               <td><router-link to="/tareas" class="custom-button">Tareas</router-link></td>
+                <td><router-link to="/contacto" class="custom-button">Contacto</router-link></td>
+             </tr> 
+        </table>
         </div>
       </div>
     </div>

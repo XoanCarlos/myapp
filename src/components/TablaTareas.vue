@@ -32,6 +32,7 @@
             <div class="input-group mb-3 w-25">
             <label class="input-group-text custom-span" for="salaSelect">Sala:</label>
                 <select class="form-select" v-model="sala" id="salaSelect">
+                    <option value="" disabled selected>Sala de Reunión</option>
                     <option value="Sala 1">Sala 1</option>
                     <option value="Sala 2">Sala 2</option>
                     <option value="Sala 3">Sala 3</option>

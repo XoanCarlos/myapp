@@ -4,7 +4,7 @@
     <NavBar/>
     </div>
     <div>
-        <h1 class="text-center">Articulos</h1>
+        <h1 class="text-center">Mi Cesta</h1>
         <p>.</p>
     </div>
 </template>
@@ -13,7 +13,7 @@
 import NavBar from '@/components/NavBar.vue';
 
 export default {
-    name: 'TablaArticulos',
+    name: 'TablaPedidos',
     components: {
         NavBar,
     },
