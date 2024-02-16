@@ -31,8 +31,8 @@
             <!-- select para seleccionar sala -->
             <div class="input-group mb-3 w-25">
             <label class="input-group-text custom-span" for="salaSelect">Sala:</label>
-                <select class="form-select" v-model="sala" id="salaSelect">
-                    <option value="" disabled selected>Sala de Reunión</option>
+                <select class="form-select" v-model="sala" id="salaSelect" >
+                    <option value="" disabled selected>Seleccione sala</option>
                     <option value="Sala 1">Sala 1</option>
                     <option value="Sala 2">Sala 2</option>
                     <option value="Sala 3">Sala 3</option>
@@ -70,6 +70,11 @@
                     <label class="form-check-label" for="prioridadBaja">Baja</label>
                 </div>
             </div>
+            <!-- Cambiar el input por un textarea -->
+            <div class="input-group mb-3">
+                <span class="input-group-text custom-span">Observaciones: </span>
+                <textarea v-model="observaciones" class="form-control"  id="descripcion" name="descripcion" placeholder="Descripción Tarea (max 256 caracteres)" maxlength="256"></textarea>
+            </div>
             <!-- Botones -->
             <div class="text-center">
                 <button type="button" class="btn btn-primary m-2" @click="guardarTarea">Guardar</button>
@@ -83,7 +88,7 @@
  <!-- tabla de datos el resto sería igual que antesa -->       
 <hr/>
  <div class="row justify-content-center mt-4">
-    <div class="col-md-8 bg-light"> 
+    <div class="col-md-10 bg-light"> 
         <div class="row justify-content-center text-primary p-2">
             <h5 class="text-center font-weight-bold">Listado Tareas</h5>
         </div>
@@ -151,6 +156,7 @@ export default {
         equipos: [],  //array para equipos puedes ser varios
         prioridad: 'alta',
         tareas: [],
+        observaciones: '',
         show : false
         };
     },
@@ -186,9 +192,10 @@ export default {
             this.nombre = '';
             this.descripcion = '';
             this.fecha = '';
-            this.sala = null;
+            this.sala = '';
             this.equipos = [];
             this.prioridad = 'alta';
+            this.observaciones = '';
 
             // Mostrar mensaje de éxito con SweetAlert
             Swal.fire({
@@ -202,10 +209,10 @@ export default {
             this.nombre = '';
             this.descripcion = '';
             this.fecha = '';
-            this.sala = null;
+            this.sala = '';
             this.equipos = [];
             this.prioridad = 'alta';
-        
+            this.observaciones = '';
       },
       
        async obtenerTareas(){
@@ -233,7 +240,8 @@ export default {
                     sala: this.sala, 
                     equipos: this.equipos,
                     prioridad: this.prioridad,
-                   
+                    observaciones: this.observaciones,                   
+ 
                 };
 
               // Verificar si la prioridad está entre los valores permitidos
@@ -313,8 +321,8 @@ export default {
             this.sala = tarea.sala;
             this.equipos = tarea.equipos;
             this.prioridad = tarea.prioridad;
-            this.tareaSeleccionada = tarea;
-          
+            this.observaciones = tarea.observaciones;
+            this.tareaSeleccionada = tarea;     
         },
 
 
@@ -330,6 +338,7 @@ export default {
                 tarea.sala = this.sala;
                 tarea.equipos = this.equipos;
                 tarea.prioridad = this.prioridad;
+                tarea.observaciones = this.observaciones;
         
                 // Enviar la solicitud PUT con la tarea actualizada al servidor
                 const res = await fetch(`http://localhost:5000/tareas/${tarea._id}`, {
