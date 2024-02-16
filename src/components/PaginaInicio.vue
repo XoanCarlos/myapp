@@ -12,8 +12,10 @@
             </tr>
              <tr>  
                <td><router-link to="/tareas" class="custom-button">Tareas</router-link></td>
-                <td><router-link to="/contacto" class="custom-button">Contacto</router-link></td>
+               <td><router-link to="/contacto" class="custom-button">Contacto</router-link></td>
              </tr> 
+             <tr></tr>  
+               <td><router-link to="/Pedidos" class="custom-button">Pedidos</router-link></td>
         </table>
         </div>
       </div>
