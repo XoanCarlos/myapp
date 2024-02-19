@@ -349,5 +349,12 @@ export default {
     width: 120px; /* Ajusta el tamaño según tus necesidades */
     display: inline-block;
     text-align: left;
-  }
+    }
+    .custom-file-input{
+        width: 100%;
+    }
+
+    .custom-file-label {
+    border: 1px solid #ced4da;
+   }
 </style>

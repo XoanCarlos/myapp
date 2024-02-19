@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="row" id="map_section">
         <div class="col-12 col-m-6 col-lg-8 mx-auto">
-        <form class="form-inline">    
+        <form class="form-inline" enctype="multipart/form-data">    
             <div class="input-group mb-3">
                 <span class="input-group-text custom-span">Nombre:</span>
                 <input v-model="nombre" type="text" class="form-control " id="nombre" name="nombre" placeholder="Nombre Tarea">
@@ -75,6 +75,15 @@
                 <span class="input-group-text custom-span">Observaciones: </span>
                 <textarea v-model="observaciones" class="form-control"  id="descripcion" name="descripcion" placeholder="Descripción Tarea (max 256 caracteres)" maxlength="256"></textarea>
             </div>
+
+            <!-- Input para el archivo -->
+            <div class="custom-file">
+                <div class="input-group mb-3 w-50">
+                    <input type="file" placeholder="Selecciona un archivo" class="custom-file-input form-control" id="archivo" name="archivo" 
+                    accept=".pdf, .jpg, .jpeg" @change="handleFileChange" ref="fileInput">
+                </div>
+            </div>
+                        
             <!-- Botones -->
             <div class="text-center">
                 <button type="button" class="btn btn-primary m-2" @click="guardarTarea">Guardar</button>
@@ -186,6 +195,11 @@ export default {
                 fechaAlta._flatpickr.open();
             }        
         },
+        // Método para manejar el cambio de archivos
+        handleFileChange(event) {
+            this.archivo = event.target.files[0];
+            console.log(this.archivo)
+        },
 
         limpiarCampos() {
             // Limpiar los campos del formulario
@@ -196,6 +210,9 @@ export default {
             this.equipos = [];
             this.prioridad = 'alta';
             this.observaciones = '';
+            this.archivo = null;
+            this.$refs.fileInput.value = null;
+            
 
             // Mostrar mensaje de éxito con SweetAlert
             Swal.fire({
@@ -205,6 +222,7 @@ export default {
             });
         },
 
+
         limpiarTarea() {
             this.nombre = '';
             this.descripcion = '';
@@ -213,6 +231,8 @@ export default {
             this.equipos = [];
             this.prioridad = 'alta';
             this.observaciones = '';
+            this.$refs.fileInput.value = null;
+            
       },
       
        async obtenerTareas(){
@@ -233,26 +253,31 @@ export default {
       async guardarTarea() {
             try {
                 console.log(this.nombre, this.descripcion, this.fecha, this.sala, this.prioridad, this.equipos);
-                const nuevaTarea = {
-                    nombre: this.nombre,
-                    descripcion: this.descripcion,
-                    fecha: format(new Date(this.fecha), 'dd-MM-yyyy'),
-                    sala: this.sala, 
-                    equipos: this.equipos,
-                    prioridad: this.prioridad,
-                    observaciones: this.observaciones,                   
- 
-                };
-
+                   // Crea un objeto FormData para enviar los datos de la tarea y el archivo al servidor
+                const formData = new FormData();
+                    formData.append('nombre', this.nombre);
+                    formData.append('descripcion', this.descripcion);
+                    formData.append('fecha', this.fecha);
+                    formData.append('sala', this.sala);
+                    this.equipos.forEach(equipo => {
+                    formData.append('equipos', equipo);
+                    });
+                    formData.append('prioridad', this.prioridad);
+                    formData.append('observaciones', this.observaciones);
+                    formData.append('archivo', this.archivo);
+                    
+     
               // Verificar si la prioridad está entre los valores permitidos
-            if (['alta', 'media', 'baja'].includes(nuevaTarea.prioridad)) {
+            if (['alta', 'media', 'baja'].includes(this.prioridad)) {
             const res = await fetch('http://localhost:5000/tareas', {
                 method: 'POST',
+                /*
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(nuevaTarea)
-                
+                */
+                body: formData
             });
 
                 await Swal.fire({

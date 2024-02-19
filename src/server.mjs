@@ -7,19 +7,20 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import tareasRouter from './router/tareas.mjs';
+import multer from 'multer';
 
-
-const app = express();
 // crea el servidor
+const app = express();
 const server = http.createServer(app);
-
-//ruta para las tareas
 app.use(cors());
-app.use('/tareas', tareasRouter);
-
-// usa el puerto 5000 pero en caso de que no este disponible usa el puerto 3000
 app.use(morgan('dev'));
 app.use(express.json());
+app.use('/tareas', tareasRouter);
+
+const upload = multer({ dest: 'uploads/' });
+app.use(upload.single('archivo'));
+
+// usa el puerto 5000 pero en caso de que no este disponible usa el puerto 3000
 
 app.set('port', process.env.PORT || 5000);
 

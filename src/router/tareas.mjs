@@ -1,10 +1,12 @@
 import express from 'express';
 const rutas = express.Router();
+import multer from 'multer';
 
 import tarea from '../models/tarea.mjs';
 
 rutas.use(express.json());
 //otra forma de crear rutas
+const upload = multer({ dest: 'uploads/' });
 
 rutas.get('/', async(req, res) => {
   try{
@@ -15,8 +17,14 @@ rutas.get('/', async(req, res) => {
 }
 });
 
-rutas.post('/', async(req, res) => {
+rutas.post('/', upload.single('archivo'), async(req, res) => {
   try {
+       // Verificar si hay un archivo adjunto
+    if (req.file) {
+        console.log('Archivo recibido:', req.file); // Registrar información sobre el archivo recibido
+      } else {
+        console.log('No se recibió ningún archivo.');
+      }
     const nuevatarea = new tarea(req.body);
     
       await nuevatarea.save();
