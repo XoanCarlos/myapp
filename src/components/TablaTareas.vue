@@ -99,7 +99,7 @@
  <div class="row justify-content-center mt-4">
     <div class="col-md-10 bg-light"> 
         <div class="row justify-content-center text-primary p-2">
-            <h5 class="text-center font-weight-bold">Listado Tareas</h5>
+            <h4 class="text-center text-danger font-weight-bold">Listado Tareas</h4>
         </div>
     <div class='table-responsive'>    
         <table class = 'table table-striped table-bordered'>
@@ -158,15 +158,15 @@ export default {
   },
     data() {
         return {
-        nombre: '',
-        descripcion: '',
-        fecha: '',
-        sala: '',
-        equipos: [],  //array para equipos puedes ser varios
-        prioridad: 'alta',
-        tareas: [],
-        observaciones: '',
-        show : false
+            nombre: '',
+            descripcion: '',
+            fecha: '',
+            sala: '',
+            equipos: [],  //array para equipos puedes ser varios
+            prioridad: 'alta',
+            tareas: [],
+            observaciones: '',
+            show : false
         };
     },
 
@@ -221,7 +221,6 @@ export default {
                 text: 'Los campos del formulario se han limpiado correctamente.',
             });
         },
-
 
         limpiarTarea() {
             this.nombre = '';
