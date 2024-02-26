@@ -19,8 +19,10 @@ app.use('/tareas', tareasRouter);
 
 const upload = multer({ dest: 'uploads/' });
 app.use(upload.single('archivo'));
+const uploadimg = multer({ dest: '/uploadimg' });
+app.use(uploadimg.single('imagen'));
 
-// usa el puerto 5000 pero en caso de que no este disponible usa el puerto 3000
+// usa el puerto 5000 
 
 app.set('port', process.env.PORT || 5000);
 

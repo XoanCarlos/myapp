@@ -2,9 +2,10 @@
   "name": "myapp",
   "version": "0.1.0",
   "private": true,
+ 
   "scripts": {
     "dev": "nodemon src/server.mjs --watch src --exec babel-node --experimental-specifier-resolution=node",
-    "json-server": "npx json-server --watch \"./public/data/clientes.json\" --port 3000",
+    "json-server": "npx json-server --watch  \"./public/data/clientes.json\" --port 3000",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",

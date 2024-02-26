@@ -299,5 +299,12 @@
       "movil": 654321458,
       "email": "jagger@yahoo.bt"
     }
+  ],
+  "productos": [
+    {
+        "codigo": "1",
+        "producto": "Juego Palos Callaway",
+        "precio": "125"
+      }
   ]
 }
