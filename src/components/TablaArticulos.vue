@@ -42,20 +42,28 @@
     </div>
 
 <!-- tabla dinámica-->
-<div class="container-fluid border mx-auto">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-12 col-m-6 col-lg-8 mx-auto">
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 bg-light"> 
+        <div class="row justify-content-center text-primary p-2">
+            <h5 class="text-center font-weight-bold">Listado Clientes</h5>
+        </div>
+    <div class='table-responsive'>  
             <table class="table">
-                <thead>
-                    <tr>
-                       <td class="text-center font-weight-bold">Listado Productos</td>                        
+                <thead class="table-info">
+                    <tr class="text-center">
+                        <th>Codigo</th>
+                        <th class="text-center">Producto</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="producto in productos" :key="producto.id">
-                        <td><img :src="producto.descripcion" alt="Descripción del producto" style="max-width: 100px; max-height: 100px;"></td>
-                        <td>{{ producto.id }} - {{ producto.nombre }} </td>
-                        <td>{{ producto.precio }}</td>
+                        <td class="text-center">{{ producto.codigo }}</td>
+                        <td>{{ producto.producto }}</td>
+                        <td class="text-center">{{ producto.precio }} €</td>
+                        <td>zonadefoto</td>
                         <td class="text-center ">
                             <div>
                                 <button class="btn btn-warning m-2" @click="modificarProducto(producto.id)">
@@ -73,12 +81,13 @@
         </div>
     </div>
 </div>
+
 </template>
 
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { Swal } from 'sweetalert2/dist/sweetalert2';
+import Swal from 'sweetalert2'  ;
 
 export default {
     name: 'TablaArticulos',
@@ -94,31 +103,27 @@ export default {
             imagen: '',
         };
     },
-   /* mounted() {
+   mounted() {
         this.cargarProductos();
-    },*/
+    },
     // métodos gestionar productos	
     methods:{
-        cargarProductos(){
-            fetch('http://localhost:3000/productos')
-            .then(response => response.json())
-            .then(data => {
-                this.productos = data;
-            })
-            .catch(error => console.error(error));
+
+        async cargarProductos(){
+            try{
+                const response = await fetch('http://localhost:3000/productos');
+                this.productos = await response.json();
+            } catch (error) {
+                console.error(error);
+            } 
         },
 
         limpiarArticulo() {
             this.codigo = '';
             this.producto = '';
             this.precio = '';
-            this.$ref.fileInput.value = null;
-            Swal.fire({
-                title: 'Datos limpiados',
-                text: 'Campos del formulario eliminados',
-                icon: 'info',
-                confirmButtonText: 'OK',
-            });
+            this.$refs.fileInput.value = null;
+
         },
 
         handleFileChange(event) {
@@ -127,26 +132,48 @@ export default {
         },
 
         async guardarArticulo() {
-            const formData = new FormData();
-            formData.append('codigo', this.codigo);
-            formData.append('producto', this.producto);
-            formData.append('precio', this.precio);
-            formData.append('imagen', this.imagen);
+           const producto = {
+                codigo: this.codigo,
+                producto: this.producto.trim(),
+                precio: this.precio.trim(),
+                
+            };
+            let url = 'http://localhost:3000/productos';
+            let metodo = 'POST';
 
             try {
-                const response = await fetch('http://localhost:3000/productos', {
-                    method: 'POST',
-                    body: formData,
+                const response = await fetch(url, {
+                    method: metodo,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(producto),
                 });
-                console.log(response);
-                const data = await response.json();
-                console.log(data);
-                //this.cargarProductos();
+                // aquí la subida de la imagen
+
+                const formData = new FormData()
+                formData.append('imagen', producto.imagen);
+
+                Swal.fire({
+                        title: 'Producto guardado',
+                        text: 'El producto ha sido guardado correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                    });
+                    //this.limpiarArticulo();
+                if (!response.ok){
+                    Swal.fire({
+                        title: 'Error al guardar',
+                        text: 'Ha ocurrido un error al guardar el producto',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    });
+                }
             } catch (error) {
                 console.error(error);
-            }
-        },
-    }
+                    }
+                },
+            },
 }
 </script>
 

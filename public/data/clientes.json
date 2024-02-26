@@ -298,13 +298,65 @@
       "municipio": "Trujillo",
       "movil": 654321458,
       "email": "jagger@yahoo.bt"
+    },
+    {
+      "id": "010d"
+    },
+    {
+      "id": "2015",
+      "codigo": "8",
+      "producto": "Bolsa Callaway",
+      "precio": "320"
     }
   ],
   "productos": [
     {
-        "codigo": "1",
-        "producto": "Juego Palos Callaway",
-        "precio": "125"
-      }
+      "codigo": "1",
+      "producto": "Juego Palos Callaway",
+      "precio": "125",
+      "id": "457d"
+    },
+    {
+      "id": "852a",
+      "codigo": "3",
+      "producto": "Golf Bolas",
+      "precio": "6"
+    },
+    {
+      "id": "cfe1",
+      "codigo": "3",
+      "producto": "Bolsa Palos Wilson",
+      "precio": "250"
+    },
+    {
+      "id": "cfed",
+      "codigo": "6",
+      "producto": "Juego Palos Wilson",
+      "precio": "125"
+    },
+    {
+      "id": "6ba2",
+      "codigo": "5",
+      "producto": "Bolas entrenamiento 10 unidades",
+      "precio": "5"
+    },
+    {
+      "id": "bc64",
+      "codigo": "7",
+      "producto": "asfd",
+      "precio": "5"
+    },
+    {
+      "id": "a0a2",
+      "codigo": "34",
+      "producto": "asdf",
+      "precio": "4"
+    },
+    {
+      "id": "35c4",
+      "codigo": "554",
+      "producto": "asdf",
+      "precio": "5"
+    }
   ]
 }
