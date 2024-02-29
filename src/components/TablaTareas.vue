@@ -195,7 +195,7 @@ export default {
                 fechaAlta._flatpickr.open();
             }        
         },
-        // Método para manejar el cambio de archivos
+        // Método para detectar que hay un fichero en el input file
         handleFileChange(event) {
             this.archivo = event.target.files[0];
             console.log(this.archivo)
