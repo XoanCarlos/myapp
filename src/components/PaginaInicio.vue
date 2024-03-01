@@ -1,21 +1,50 @@
-<template>
+div<template>
     <div>
       <NavBar />
       <div class="page-content">
-        <br>
+        <br>r
         <h1 class="text-center">Panel Gestión {{ alumno }}</h1>
         <div class="button-container">
           <table>
             <tr>
-              <td><router-link to="/clientes" class="custom-button">Clientes</router-link></td>
-              <td><router-link to="/articulos" class="custom-button">Artículos</router-link></td>
-            </tr>
+              <td>
+                <router-link to="/clientes" class="custom-button">
+                  <div class="icon-text-container">
+                    <i class="fas fa-user fa-lg"></i>
+                      <span>Clientes</span>
+                  </div>
+                </router-link>
+              </td>
+              <td>
+                <router-link to="/articulos" class="custom-button">
+                  <div class="icon-text-container">
+                    <i class="fas fa-box fa-lg"></i>
+                    <span>Artículos</span>
+                  </div>
+                </router-link></td>
+             </tr>
              <tr>  
-               <td><router-link to="/tareas" class="custom-button">Tareas</router-link></td>
-               <td><router-link to="/contacto" class="custom-button">Contacto</router-link></td>
+               <td><router-link to="/tareas" class="custom-button">
+                <div class="icon-text-container">
+                  <i class="fas fa-tasks fa-lg"></i>
+                  <span>Tareas</span>
+                </div>
+              </router-link></td>
+               <td><router-link to="/contacto" class="custom-button">
+                  <div class="icon-text-container">
+                    <i class="fas fa-envelope fa-lg"></i>
+                    <span>Contacto</span>
+                  </div>
+                </router-link></td>
              </tr> 
-             <tr></tr>  
-               <td><router-link to="/Pedidos" class="custom-button">Pedidos</router-link></td>
+             <tr>
+               <td><router-link to="/Pedidos" class="custom-button">
+                <div class ="icon-text-container">
+                  <i class="fas fa-shopping-cart fa-lg"></i>
+                  <span>Pedidos</span>
+                </div>
+                </router-link></td>
+              </tr>  
         </table>
         </div>
       </div>
@@ -71,5 +100,10 @@
   .custom-button:hover {
     background-color: #2980b9;
   }
+  .icon-text-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
   </style>
   
