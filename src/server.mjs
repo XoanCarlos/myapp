@@ -7,7 +7,8 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import tareasRouter from './router/tareas.mjs';
-const path = require('path');
+//const path = require('path');
+import path from 'path';
 import multer from 'multer';
 
 // crea el servidor
@@ -17,11 +18,10 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use('/tareas', tareasRouter);
-
-
+/*
 const upload = multer({ dest: 'uploads/' });
 app.use(upload.single('archivo'));
-const uploadimg = multer({ dest: path.join(__dirname, 'uploadimg/')});
+const uploadimg = multer({ dest: path.join(__dirname, 'uploads/')});
 // Ruta para subir el archivo directamente al directorio uploadimg/
 app.post('/uploadimg', uploadimg.single('imagen'), (req, res) => {
   if (!req.file) {
@@ -30,16 +30,15 @@ app.post('/uploadimg', uploadimg.single('imagen'), (req, res) => {
 
   return res.json({ filename: req.file.filename });
 });
-
+*/
 // usa el puerto 5000 
 
 app.set('port', process.env.PORT || 5000);
-
 // ruta inicial
+
 app.get('/', (req, res) => {
   res.send('Hola soy tu servidor nuevo!');
 });
-
 // inicia el servidor en el puerto 5000
 
 server.listen(app.get('port'), () => {
